@@ -291,3 +291,4 @@ This deploys both the Node/Express backend and React frontend together on a sing
      - `VITE_API_BASE_URL`: `https://studybuddy-api.onrender.com`
    - Click **Deploy**.
    *(The included `frontend/vercel.json` and `frontend/public/_redirects` automatically handle client-side SPA route rewrites).*
+#happy coding
