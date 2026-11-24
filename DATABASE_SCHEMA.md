@@ -42,7 +42,7 @@ erDiagram
         String promptSnapshot "prompt audit trail"
         Mixed response "summary markdown or quiz JSON"
         String status "success | failed"
-        String modelUsed "e.g., gemini-1.5-flash"
+        String modelUsed "e.g., gemini-3.8-flash"
         Number durationMs "latency benchmark"
         Date createdAt
         Date updatedAt

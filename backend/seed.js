@@ -4,6 +4,8 @@ const User = require('./models/User');
 const Note = require('./models/Note');
 const AIRequest = require('./models/AIRequest');
 
+const MODEL = process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite';
+
 const seedData = async () => {
   try {
     const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/studybuddy';
@@ -111,7 +113,7 @@ Cellular respiration oxidizes glucose to generate usable ATP via Glycolysis, Pyr
 Remember that oxidative phosphorylation produces the vast majority of cellular ATP via proton gradients.`
       },
       status: 'success',
-      modelUsed: 'gemini-1.5-flash',
+      modelUsed: MODEL,
       durationMs: 1250,
       createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000)
     });
@@ -140,7 +142,7 @@ Remember that oxidative phosphorylation produces the vast majority of cellular A
         ]
       },
       status: 'success',
-      modelUsed: 'gemini-1.5-flash',
+      modelUsed: MODEL,
       durationMs: 1540,
       createdAt: new Date()
     });
@@ -162,7 +164,7 @@ Shifted Britain from rural agriculture to mechanized factory production, fueled 
 • Led to the emergence of modern labor laws and factory reform.`
       },
       status: 'success',
-      modelUsed: 'gemini-1.5-flash',
+      modelUsed: MODEL,
       durationMs: 1100,
       createdAt: new Date()
     });

@@ -36,7 +36,7 @@ const aiRequestSchema = new mongoose.Schema(
     },
     modelUsed: {
       type: String,
-      default: 'gemini-1.5-flash'
+      default: 'gemini-3.8-flash'
     },
     durationMs: {
       type: Number,
