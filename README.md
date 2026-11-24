@@ -237,3 +237,57 @@ Import the included Postman collection:
 studybuddy_postman_collection.json
 ```
 The collection includes pre-configured environment variables (`baseUrl`, `accessToken`, `refreshToken`, `noteId`) and test scripts that automatically capture and persist authentication tokens.
+
+---
+
+## 🚀 Production Deployment Guide
+
+### Option 1: Full-Stack Single-Service on Render (Recommended)
+This deploys both the Node/Express backend and React frontend together on a single Render Web Service:
+
+1. **Push your code to GitHub:**
+   ```bash
+   git push origin main
+   ```
+2. **Create a Free MongoDB Atlas Database:**
+   - Go to [mongodb.com/atlas](https://www.mongodb.com/atlas) and create a free M0 cluster.
+   - In "Database Access", create a database user and password.
+   - In "Network Access", allow access from anywhere (`0.0.0.0/0`).
+   - Copy your connection string: `mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/studybuddy?retryWrites=true&w=majority`
+3. **Create a New Web Service on Render:**
+   - Connect your GitHub repository.
+   - **Environment:** `Node`
+   - **Build Command:** `npm run build`
+   - **Start Command:** `npm start`
+4. **Set Environment Variables in Render Dashboard:**
+   - `PORT`: `5001` (or leave default, Render sets `PORT` automatically)
+   - `MONGODB_URI`: `your_mongodb_atlas_connection_string`
+   - `JWT_ACCESS_SECRET`: `any_long_random_string`
+   - `JWT_REFRESH_SECRET`: `any_different_long_random_string`
+   - `GEMINI_API_KEY`: `your_gemini_api_key`
+   - `GEMINI_MODEL`: `gemini-3-flash-preview`
+   - `RATE_LIMIT_MAX_REQUESTS`: `50`
+   - `RATE_LIMIT_WINDOW_MINUTES`: `15`
+5. **Click "Deploy Web Service":**
+   Render builds the React frontend, starts Express, and serves both the API (`/api/*`) and React application seamlessly from your Render URL!
+
+---
+
+### Option 2: Decoupled Deploy (Backend on Render + Frontend on Vercel)
+
+1. **Deploy Backend on Render:**
+   - Create a Web Service pointing to your repo.
+   - **Root Directory:** `backend`
+   - **Build Command:** `npm install`
+   - **Start Command:** `node server.js`
+   - Add your environment variables (`MONGODB_URI`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, `GEMINI_API_KEY`, etc.).
+   - Copy your deployed backend URL: e.g. `https://studybuddy-api.onrender.com`.
+
+2. **Deploy Frontend on Vercel:**
+   - Import your repo on [vercel.com](https://vercel.com).
+   - **Root Directory:** `frontend`
+   - **Framework Preset:** `Vite`
+   - **Environment Variables:**
+     - `VITE_API_BASE_URL`: `https://studybuddy-api.onrender.com`
+   - Click **Deploy**.
+   *(The included `frontend/vercel.json` and `frontend/public/_redirects` automatically handle client-side SPA route rewrites).*

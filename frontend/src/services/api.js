@@ -1,4 +1,7 @@
-const BASE_URL = '/api';
+const envUrl = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = envUrl
+  ? (envUrl.endsWith('/api') ? envUrl : `${envUrl.replace(/\/+$/, '')}/api`)
+  : '/api';
 
 const getStoredTokens = () => {
   return {

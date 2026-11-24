@@ -10,6 +10,9 @@ const noteRoutes = require('./routes/noteRoutes');
 const aiRoutes = require('./routes/aiRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 
+const path = require('path');
+const fs = require('fs');
+
 const app = express();
 
 // Connect to MongoDB
@@ -17,7 +20,7 @@ connectDB();
 
 // Global Middlewares
 app.use(cors({
-  origin: '*',
+  origin: (origin, callback) => callback(null, true),
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
@@ -37,6 +40,18 @@ app.use('/api/auth', authRoutes);
 app.use('/api/notes', noteRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/admin', adminRoutes);
+
+// Serve frontend build if dist folder exists (e.g. production deploy)
+const frontendDist = path.join(__dirname, '../frontend/dist');
+if (fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist));
+  app.use((req, res, next) => {
+    if (req.method === 'GET' && !req.originalUrl.startsWith('/api')) {
+      return res.sendFile(path.join(frontendDist, 'index.html'));
+    }
+    next();
+  });
+}
 
 // Catch 404 routes
 app.use((req, res, next) => {
